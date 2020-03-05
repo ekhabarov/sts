@@ -25,7 +25,7 @@
 ## Install
 
 ```shell
-go get -u github.com/ekhabarov/sts
+go get -u github.com/ekhabarov/sts/cmd/sts
 ```
 
 ## Motivation
