@@ -1,0 +1,138 @@
+run:
+  skip-dirs:
+
+  # default is true. Enables skipping of directories:
+  #   vendor$, third_party$, testdata$, examples$, Godeps$, builtin$
+  skip-dirs-use-default: true
+
+
+# all available settings of specific linters
+linters-settings:
+  dogsled:
+    # checks assignments with too many blank identifiers; default is 2
+    max-blank-identifiers: 2
+  dupl:
+    # tokens count to trigger issue, 150 by default
+    threshold: 150
+  errcheck:
+    # report about not checking of errors in type assertions: `a := b.(MyStruct)`;
+    # default is false: such cases aren't reported by default.
+    check-type-assertions: true
+
+    # report about assignment of errors to blank identifier: `num, _ := strconv.Atoi(numStr)`;
+    # default is false: such cases aren't reported by default.
+    check-blank: true
+
+  funlen:
+    lines: 100
+    statements: 45
+  gocognit:
+    # minimal code complexity to report, 30 by default (but we recommend 10-20)
+    min-complexity: 10
+  goconst:
+    # minimal length of string constant, 3 by default
+    min-len: 3
+    # minimal occurrences count to trigger, 3 by default
+    min-occurrences: 3
+  gocyclo:
+    # minimal code complexity to report, 30 by default (but we recommend 10-20)
+    min-complexity: 18
+  gofmt:
+    # simplify code: gofmt with `-s` option, true by default
+    simplify: true
+  goimports:
+    # put imports beginning with prefix after 3rd-party packages;
+    # it's a comma-separated list of prefixes
+    local-prefixes: github.com/ekhabarov/sts
+  golint:
+    # minimal confidence for issues, default is 0.8
+    min-confidence: 0.8
+  gomnd:
+    settings:
+      mnd:
+        # the list of enabled checks, see https://github.com/tommy-muehle/go-mnd/#checks for description.
+        checks: argument,case,condition,operation,return,assign
+  govet:
+    # report about shadowed variables
+    check-shadowing: true
+
+    # settings per analyzer
+    settings:
+      printf: # analyzer name, run `go tool vet help` to see all analyzers
+        funcs: # run `go tool vet help printf` to see available settings for `printf` analyzer
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Infof
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Warnf
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Errorf
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Fatalf
+
+    # enable or disable analyzers by name
+    enable:
+      - atomicalign
+    enable-all: false
+    disable:
+      - shadow
+    disable-all: false
+  lll:
+    # max line length, lines longer will be reported. Default is 120.
+    # '\t' is counted as 1 character by default, and can be changed with the tab-width option
+    line-length: 80
+    # tab width in spaces. Default to 1.
+    tab-width: 1
+  maligned:
+    # print struct with more effective memory layout or not, false by default
+    suggest-new: true
+  misspell:
+    # Correct spellings using locale preferences for US or UK.
+    # Default is to use a neutral variety of English.
+    # Setting locale to US will correct the British spelling of 'colour' to 'color'.
+    locale: US
+    ignore-words:
+      - someword
+  nakedret:
+    # make an issue if func has more lines of code than this setting and it has naked returns; default is 30
+    max-func-lines: 30
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - deadcode
+    - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - funlen
+    - gochecknoinits
+    - goconst
+    - gocritic
+    - gocyclo
+    - gofmt
+    - goimports
+    - golint
+    # - gomnd
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - interfacer
+    - lll
+    - misspell
+    - nakedret
+    - rowserrcheck
+    - scopelint
+    - staticcheck
+    - structcheck
+    - stylecheck
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - varcheck
+    - whitespace
+issues:
+  # Excluding configuration per-path, per-linter, per-text and per-source
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - gomnd
