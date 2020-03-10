@@ -56,6 +56,7 @@ func (d *ftpldata) header(swap bool) {
 	}
 
 	fmt.Fprintf(d,
+		// TODO(ekhabarov): Customizable 2 or To or whatever
 		"func %[1]s2%[2]s(src %[3]s%[1]s) %[4]s%[2]s {\n",
 		lt, rt, lp, rp,
 	)

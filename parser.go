@@ -7,8 +7,8 @@ import (
 	"go/parser"
 	"go/token"
 	"go/types"
-	"io"
-	"log"
+	"os"
+	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
@@ -119,13 +119,11 @@ func inspect(
 				ftags = fieldTags(t.Value, tags)
 			}
 
-			id, fn, typ, ptr := typsw(field.Type)
+			id, fn, _, ptr := typsw(field.Type)
 
 			if fn != "" {
 				fname = fn
 			}
-
-			_ = typ
 
 			output.Structs[sname][fname] = Field{
 				Type:      info.TypeOf(id),
@@ -182,14 +180,60 @@ func typsw(fieldType ast.Expr) (id *ast.Ident, fname, typ string, ptr bool) {
 	return
 }
 
-// Parse gets path to source file or content of source file as a io.Reader and
-// run inspect functions on it. Function returns list of structures with
-// information their about fields.
-func Parse(path string, src io.Reader, tags []string) (*File, error) {
+// Parse gets path to source file, imports whole file package and run inspect
+// functions on given file. Parsing whole package is necessary because
+// structures and field types can be defined in different files. Function
+// returns list of structures with information their about fields.
+func Parse(path string, tags []string) (*File, error) {
 	fset := token.NewFileSet()
-	node, err := parser.ParseFile(fset, path, src, 0)
+	file := filepath.Base(path)
+
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return nil, fmt.Errorf("file %q doesn't exist", path)
+	}
+
+	// Parse whole package.
+	pkgs, err := parser.ParseDir(fset, filepath.Dir(path),
+		func(f os.FileInfo) bool {
+			return !strings.HasSuffix(f.Name(), "_test.go") // skip test files.
+		}, 0)
 	if err != nil {
 		return nil, err
+	}
+
+	// AST representation of the file passed via path parameter.
+	var node *ast.File
+	ok := false
+	astFiles := []*ast.File{} // parsed package files
+
+	for pn, p := range pkgs {
+		for _, f := range p.Files {
+			// collect all files from within a package
+			astFiles = append(astFiles, f)
+		}
+
+		// determine passed file.
+		for n := range p.Files {
+			if node != nil {
+				break
+			}
+
+			// Possible BUG: if there are two files with same name from different
+			// packages and it sts is run from parent directory.
+			if !strings.HasSuffix(n, file) {
+				continue
+			}
+
+			name := file
+			if strings.Contains(n, "/") { // filename can be of format package/file.go
+				name = strings.TrimSuffix(n, file) + file
+			}
+
+			node, ok = p.Files[name]
+			if !ok {
+				return nil, fmt.Errorf("file %q not found in package %q: ", file, pn)
+			}
+		}
 	}
 
 	info := types.Info{
@@ -203,11 +247,13 @@ func Parse(path string, src io.Reader, tags []string) (*File, error) {
 	//
 	// Basically, importer.Default() doesn't work when package like
 	// "github.com/ekhabarov/sts/example/nulls" is imported.
+	//
+	// TODO(ekhabarov): import structs from vendor.
 	conf := types.Config{Importer: importer.ForCompiler(fset, "source", nil)}
 
-	_, err = conf.Check("source", fset, []*ast.File{node}, &info)
+	_, err = conf.Check("", fset, astFiles, &info)
 	if err != nil {
-		log.Fatal(err)
+		return nil, fmt.Errorf("conf.check call error: %#v", err)
 	}
 
 	f := &File{}

@@ -3,7 +3,7 @@ package whatever
 import "time"
 
 type (
-	MyStruct struct {
+	Selector struct {
 		Intf      int
 		Strf      string
 		CreatedAt time.Time

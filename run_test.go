@@ -104,8 +104,8 @@ var _ = Describe("Run", func() {
 
 			Entry("001: Field without tags",
 				input{
-					left:         "./testdata/run/input/001_a.go:A001",
-					right:        "./testdata/run/input/001_b.go:B001",
+					left:         "./testdata/run/input/source/001_a.go:A001",
+					right:        "./testdata/run/input/dest/001_b.go:B001",
 					sourceTag:    "sts",
 					outputDir:    ".",
 					helperPkg:    "helpers",
@@ -128,21 +128,21 @@ var _ = Describe("Run", func() {
 
 			Entry("003: Source struct not found",
 				input{
-					left:        "./testdata/run/input/001_a.go:None",
-					right:       "./testdata/run/input/001_b.go:B001",
+					left:        "./testdata/run/input/source/001_a.go:None",
+					right:       "./testdata/run/input/dest/001_b.go:B001",
 					sourceTag:   "sts",
 					outputDir:   ".",
-					expectedErr: "source structure None not found",
+					expectedErr: `source structure "None" not found: `,
 				},
 			),
 
 			Entry("004: Destination struct not found",
 				input{
-					left:        "./testdata/run/input/001_a.go:A001",
-					right:       "./testdata/run/input/001_b.go:None",
+					left:        "./testdata/run/input/source/001_a.go:A001",
+					right:       "./testdata/run/input/dest/001_b.go:None",
 					sourceTag:   "sts",
 					outputDir:   ".",
-					expectedErr: "destination structure None not found",
+					expectedErr: `destination structure "None" not found: `,
 				},
 			),
 

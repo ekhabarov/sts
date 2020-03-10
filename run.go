@@ -54,14 +54,14 @@ func Run(
 		return "", nil, ErrIncorectDestParam
 	}
 
-	parsedSrc, err := Parse(sf, nil, []string{sourceTag})
+	parsedSrc, err := Parse(sf, []string{sourceTag})
 	if err != nil {
 		return "", nil, err
 	}
 
 	vt := strings.Split(validDstTags, ",")
 
-	parsedDst, err := Parse(df, nil, vt)
+	parsedDst, err := Parse(df, vt)
 	if err != nil {
 		return "", nil, err
 	}
@@ -82,12 +82,12 @@ func Run(
 
 	ss, ok := parsedSrc.Structs[ssn]
 	if !ok {
-		return "", nil, fmt.Errorf("source structure %s not found", ssn)
+		return "", nil, fmt.Errorf("source structure %q not found: ", ssn)
 	}
 
 	ds, ok := parsedDst.Structs[dsn]
 	if !ok {
-		return "", nil, fmt.Errorf("destination structure %s not found", dsn)
+		return "", nil, fmt.Errorf("destination structure %q not found: ", dsn)
 	}
 
 	linkedFields, err := link(ss, ds, sourceTag, vt)

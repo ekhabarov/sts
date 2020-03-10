@@ -5,7 +5,7 @@ type (
 		CS string
 	}
 
-	MyStruct struct {
+	WithEmbedded struct {
 		I int
 		S string
 		Embedded

@@ -1,7 +1,7 @@
 package whatever
 
 type (
-	MyStruct struct {
+	UnsupportedSlices struct {
 		Items []map[string]int
 	}
 )

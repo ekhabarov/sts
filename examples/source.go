@@ -2,11 +2,9 @@ package examples
 
 import (
 	"time"
-
-	"github.com/ekhabarov/sts/examples/nulls"
 )
 
-//go:generate sts -src $GOFILE:Source -dst $GOFILE:Dest -o ./output -dt json,db
+//go:generate sts -src $GOFILE:Source -dst ./dest/dest.go:Dest -o ./output -dt json,db
 type Source struct {
 	I  int
 	S  string
@@ -15,17 +13,7 @@ type Source struct {
 	PT *time.Time `sts:"Nt"` // types.Named
 	JJ string     `sts:"json_field"`
 	D  int32      `sts:"db_field"`
-}
-
-// dest, techincally it's some isolated structure we cannot change.
-type Dest struct {
-	I         int
-	S         string
-	I64       int64
-	B         bool
-	Nt        nulls.Time
-	JsonField string `json:"json_field"`
-	DB        int64  `db:"db_field"`
+	R  Doer
 }
 
 //go:generate sts -src $GOFILE:subsrc -dst $GOFILE:anysub -o .

@@ -3,7 +3,7 @@ package whatever
 import "time"
 
 type (
-	MyStruct struct {
+	TimeSlices struct {
 		Intf      *int
 		TimeSlice []time.Time
 	}

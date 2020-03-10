@@ -1,25 +1,34 @@
 package sts
 
 import (
-	"bytes"
-	"io/ioutil"
+	"fmt"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	gs "github.com/onsi/gomega/gstruct"
 )
 
-func loadFile(filepath string) File {
-	fc, err := ioutil.ReadFile("./testdata/parser-input/" + filepath)
-	Expect(err).NotTo(HaveOccurred())
-
-	str, err := Parse(filepath, bytes.NewReader(fc), nil)
+func loadFile(path string) File {
+	str, err := Parse("./testdata/parser-input/"+path, nil)
 	Expect(err).NotTo(HaveOccurred())
 
 	return *str
 }
 
 var _ = Describe("Parser", func() {
+
+	Describe("Errors", func() {
+
+		Context("not-exists.go", func() {
+
+			It("uses package name only", func() {
+				path := "./testdata/parser-input/not-exists.go"
+				str, err := Parse(path, nil)
+				Expect(err).To(MatchError(fmt.Sprintf("file %q doesn't exist", path)))
+				Expect(str).To(BeNil())
+			})
+		})
+	})
 
 	Describe("Load and parse", func() {
 
@@ -58,7 +67,7 @@ var _ = Describe("Parser", func() {
 				Expect(str).To(gs.MatchAllFields(gs.Fields{
 					"Package": Equal("whatever"),
 					"Structs": gs.MatchAllKeys(gs.Keys{
-						"MyStruct": gs.MatchAllKeys(gs.Keys{
+						"OneStruct": gs.MatchAllKeys(gs.Keys{
 
 							"I": gs.MatchAllFields(gs.Fields{
 								"Type":      TypeMatcher("int"),
@@ -103,7 +112,7 @@ var _ = Describe("Parser", func() {
 					"Package": Equal("whatever"),
 					"Structs": gs.MatchAllKeys(gs.Keys{
 
-						"MyStruct": gs.MatchAllKeys(gs.Keys{
+						"WithEmbedded": gs.MatchAllKeys(gs.Keys{
 
 							"I": gs.MatchAllFields(gs.Fields{
 								"Type":      TypeMatcher("int"),
@@ -120,7 +129,7 @@ var _ = Describe("Parser", func() {
 							}),
 
 							"embedded_0": gs.MatchAllFields(gs.Fields{
-								"Type":      TypeMatcher("source.Embedded"),
+								"Type":      TypeMatcher("Embedded"),
 								"IsPointer": BeFalse(),
 								"Tags":      BeZero(),
 								"Ord":       Equal(uint8(2)),
@@ -168,7 +177,7 @@ var _ = Describe("Parser", func() {
 							}),
 						}),
 
-						"MyStruct": gs.MatchAllKeys(gs.Keys{
+						"First": gs.MatchAllKeys(gs.Keys{
 
 							"Intf": gs.MatchAllFields(gs.Fields{
 								"Type":      TypeMatcher("int"),
@@ -199,7 +208,7 @@ var _ = Describe("Parser", func() {
 					"Package": Equal("whatever"),
 					"Structs": gs.MatchAllKeys(gs.Keys{
 
-						"MyStruct": gs.MatchAllKeys(gs.Keys{
+						"Selector": gs.MatchAllKeys(gs.Keys{
 
 							"Intf": gs.MatchAllFields(gs.Fields{
 								"Type":      TypeMatcher("int"),
@@ -237,7 +246,7 @@ var _ = Describe("Parser", func() {
 					"Package": Equal("whatever"),
 					"Structs": gs.MatchAllKeys(gs.Keys{
 
-						"MyStruct": gs.MatchAllKeys(gs.Keys{
+						"Slices": gs.MatchAllKeys(gs.Keys{
 
 							"Intf": gs.MatchAllFields(gs.Fields{
 								"Type":      TypeMatcher("int"),
@@ -268,7 +277,7 @@ var _ = Describe("Parser", func() {
 					"Package": Equal("whatever"),
 					"Structs": gs.MatchAllKeys(gs.Keys{
 
-						"MyStruct": gs.MatchAllKeys(gs.Keys{
+						"TimeSlices": gs.MatchAllKeys(gs.Keys{
 
 							"Intf": gs.MatchAllFields(gs.Fields{
 								"Type":      TypeMatcher("int"),
@@ -299,9 +308,9 @@ var _ = Describe("Parser", func() {
 					"Package": Equal("whatever"),
 					"Structs": gs.MatchAllKeys(gs.Keys{
 
-						"MyStruct": gs.MatchAllKeys(gs.Keys{
+						"UnsupportedSlices": gs.MatchAllKeys(gs.Keys{
 
-							"unsupported_*ast.MapType_55": gs.MatchAllFields(gs.Fields{
+							"unsupported_*ast.MapType_1024": gs.MatchAllFields(gs.Fields{
 								"Type":      BeNil(),
 								"IsPointer": BeFalse(),
 								"Tags":      BeZero(),
@@ -323,7 +332,7 @@ var _ = Describe("Parser", func() {
 					"Package": Equal("whatever"),
 					"Structs": gs.MatchAllKeys(gs.Keys{
 
-						"MyStruct": gs.MatchAllKeys(gs.Keys{
+						"TimeTime": gs.MatchAllKeys(gs.Keys{
 
 							"T": gs.MatchAllFields(gs.Fields{
 								"Type":      TypeMatcher("time.Time"),
@@ -361,23 +370,23 @@ var _ = Describe("Parser", func() {
 					"Package": Equal("whatever"),
 					"Structs": gs.MatchAllKeys(gs.Keys{
 
-						"MyStruct": gs.MatchAllKeys(gs.Keys{
+						"UnsupportedTypes": gs.MatchAllKeys(gs.Keys{
 
-							"unsupported_*ast.FuncType_50": gs.MatchAllFields(gs.Fields{
+							"unsupported_*ast.FuncType_659": gs.MatchAllFields(gs.Fields{
 								"Type":      BeNil(),
 								"IsPointer": BeFalse(),
 								"Tags":      BeZero(),
 								"Ord":       Equal(uint8(0)),
 							}),
 
-							"unsupported_*ast.MapType_62": gs.MatchAllFields(gs.Fields{
+							"unsupported_*ast.MapType_671": gs.MatchAllFields(gs.Fields{
 								"Type":      BeNil(),
 								"IsPointer": BeFalse(),
 								"Tags":      BeZero(),
 								"Ord":       Equal(uint8(1)),
 							}),
 
-							"unsupported_*ast.MapType_83": gs.MatchAllFields(gs.Fields{
+							"unsupported_*ast.MapType_692": gs.MatchAllFields(gs.Fields{
 								"Type":      BeNil(),
 								"IsPointer": BeTrue(),
 								"Tags":      BeZero(),
@@ -396,17 +405,10 @@ var _ = Describe("Parser", func() {
 		Context("when call Lookup with existing struct", func() {
 
 			It("returns set of fields", func() {
-				str, err := Parse("file.go", bytes.NewReader([]byte(`package model
-
-type (
-	MyStruct struct {
-		Intf	 int
-		Strf *string
-	}
-)`)), nil)
+				str, err := Parse("./testdata/parser-input/two-independent-structs.go", nil)
 				Expect(err).NotTo(HaveOccurred())
 
-				fields, err := Lookup(str, "MyStruct")
+				fields, err := Lookup(str, "Second")
 				Expect(err).NotTo(HaveOccurred())
 
 				Expect(fields).To(gs.MatchAllKeys(gs.Keys{
@@ -432,14 +434,7 @@ type (
 		Context("when call Lookup with non-existing struct", func() {
 
 			It("returns set of fields", func() {
-				str, err := Parse("file.go", bytes.NewReader([]byte(`package model
-
-type (
-	MyStruct struct {
-		ID	 int
-		Name *string
-	}
-)`)), nil)
+				str, err := Parse("./testdata/parser-input/two-independent-structs.go", nil)
 				Expect(err).NotTo(HaveOccurred())
 
 				fields, err := Lookup(str, "NotExists")

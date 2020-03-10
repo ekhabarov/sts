@@ -1,7 +1,7 @@
 package whatever
 
 type (
-	MyStruct struct {
+	OneStruct struct {
 		I  int
 		PI *int
 		S  string

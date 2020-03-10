@@ -1,8 +1,6 @@
 package sts
 
 import (
-	"bytes"
-	"io/ioutil"
 	"sort"
 
 	. "github.com/onsi/ginkgo"
@@ -310,10 +308,7 @@ var _ = Describe("Field", func() {
 
 		var (
 			readStruct = func(fname, sname string) Fields {
-				f, err := ioutil.ReadFile("./testdata/field/" + fname)
-				Expect(err).NotTo(HaveOccurred())
-
-				data, err := Parse("", bytes.NewReader(f), []string{
+				data, err := Parse("./testdata/field/"+fname, []string{
 					"sts", "json", "bar", "db",
 				})
 				Expect(err).NotTo(HaveOccurred())

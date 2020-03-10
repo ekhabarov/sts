@@ -6,7 +6,7 @@ type (
 		Strf *string
 	}
 
-	MyStruct struct {
+	First struct {
 		Intf    *int
 		StringF string
 	}

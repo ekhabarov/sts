@@ -1,7 +1,7 @@
 package whatever
 
 type (
-	MyStruct struct {
+	UnsupportedTypes struct {
 		F  func()
 		M  map[int]string
 		PM *map[int]string

@@ -1,7 +1,7 @@
 package whatever
 
 type (
-	MyStruct struct {
+	Slices struct {
 		Intf     int
 		IntSlice []int
 	}

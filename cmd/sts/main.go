@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"log"
+	"fmt"
 	"os"
 
 	"github.com/ekhabarov/sts"
@@ -21,7 +21,7 @@ Last part of this path will be used as output package name.
 	helperpkg = flag.String("hp", "", "Package with helper functions")
 	debug     = flag.Bool("debug", false, "Debug")
 
-	version = "0.0.1-alpha-dev"
+	version = "0.0.2-alpha-dev"
 )
 
 func main() {
@@ -43,9 +43,10 @@ func main() {
 func must(err error) {
 	if err != nil {
 		if *debug {
-			log.Fatalf("%+v", err)
+			fmt.Printf("%+v", err)
 		} else {
-			log.Fatalf("%v", err)
+			fmt.Printf("%v", err)
 		}
+		os.Exit(1)
 	}
 }
