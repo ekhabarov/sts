@@ -4,6 +4,7 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ekhabarov/sts)](https://github.com/ekhabarov/sts/releases)
 [![Travis (.org)](https://img.shields.io/travis/ekhabarov/sts)](https://travis-ci.org/ekhabarov/sts)
 [![GoDoc](https://godoc.org/https://godoc.org/github.com/ekhabarov/sts?status.svg)](https://godoc.org/github.com/ekhabarov/sts)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ekhabarov/sts)](https://goreportcard.com/report/github.com/ekhabarov/sts)
 
 <!-- vim-markdown-toc GFM -->
 
@@ -25,7 +26,7 @@
 ## Install
 
 ```shell
-go get -u github.com/ekhabarov/sts
+go get -u github.com/ekhabarov/sts/cmd/sts
 ```
 
 ## Motivation
