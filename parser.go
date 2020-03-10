@@ -120,6 +120,9 @@ func inspect(
 			}
 
 			id, fn, _, ptr := typsw(field.Type)
+			if id == nil {
+				continue
+			}
 
 			if fn != "" {
 				fname = fn
@@ -172,10 +175,6 @@ func typsw(fieldType ast.Expr) (id *ast.Ident, fname, typ string, ptr bool) {
 	case *ast.ArrayType:
 		id, fname, typ, ptr = typsw(t.Elt)
 		return
-
-	default:
-		typ = fmt.Sprintf("%T", t)
-		fname = fmt.Sprintf("unsupported_%s_%d", typ, t.Pos())
 	}
 	return
 }

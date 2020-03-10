@@ -307,16 +307,7 @@ var _ = Describe("Parser", func() {
 				Expect(str).To(gs.MatchAllFields(gs.Fields{
 					"Package": Equal("whatever"),
 					"Structs": gs.MatchAllKeys(gs.Keys{
-
-						"UnsupportedSlices": gs.MatchAllKeys(gs.Keys{
-
-							"unsupported_*ast.MapType_1024": gs.MatchAllFields(gs.Fields{
-								"Type":      BeNil(),
-								"IsPointer": BeFalse(),
-								"Tags":      BeZero(),
-								"Ord":       Equal(uint8(0)),
-							}),
-						}),
+						"UnsupportedSlices": HaveLen(0),
 					}),
 				}))
 			})
@@ -369,30 +360,7 @@ var _ = Describe("Parser", func() {
 				Expect(str).To(gs.MatchAllFields(gs.Fields{
 					"Package": Equal("whatever"),
 					"Structs": gs.MatchAllKeys(gs.Keys{
-
-						"UnsupportedTypes": gs.MatchAllKeys(gs.Keys{
-
-							"unsupported_*ast.FuncType_659": gs.MatchAllFields(gs.Fields{
-								"Type":      BeNil(),
-								"IsPointer": BeFalse(),
-								"Tags":      BeZero(),
-								"Ord":       Equal(uint8(0)),
-							}),
-
-							"unsupported_*ast.MapType_671": gs.MatchAllFields(gs.Fields{
-								"Type":      BeNil(),
-								"IsPointer": BeFalse(),
-								"Tags":      BeZero(),
-								"Ord":       Equal(uint8(1)),
-							}),
-
-							"unsupported_*ast.MapType_692": gs.MatchAllFields(gs.Fields{
-								"Type":      BeNil(),
-								"IsPointer": BeTrue(),
-								"Tags":      BeZero(),
-								"Ord":       Equal(uint8(2)),
-							}),
-						}),
+						"UnsupportedTypes": HaveLen(0),
 					}),
 				}))
 			})
