@@ -20,12 +20,18 @@ Last part of this path will be used as output package name.
 	)
 	helperpkg = flag.String("hp", "", "Package with helper functions")
 	debug     = flag.Bool("debug", false, "Debug")
+	ver       = flag.Bool("version", false, "Print current version")
 
 	version = "0.0.2-alpha-dev"
 )
 
 func main() {
 	flag.Parse()
+
+	if *ver {
+		fmt.Printf("version: %s\n", version)
+		os.Exit(0)
+	}
 
 	name, content, err := sts.Run(
 		*src, *dst,
