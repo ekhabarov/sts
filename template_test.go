@@ -53,15 +53,57 @@ var _ = Describe("Template", func() {
 
 		Context("swapped = false", func() {
 			It("writes filled function header into output", func() {
-				data.header(false)
+				data.header(false, false, false)
 				Expect(data.String()).To(Equal("func lt2rt(src lp.lt) rp.rt {\n"))
 			})
 		})
 
 		Context("swapped = true", func() {
 			It("writes filled function header into output", func() {
-				data.header(true)
+				data.header(true, false, false)
 				Expect(data.String()).To(Equal("func rt2lt(src rp.rt) lp.lt {\n"))
+			})
+		})
+
+		Context("swapped = false", func() {
+			It("writes filled function header into output for left pointers", func() {
+				data.header(false, true, false)
+				Expect(data.String()).To(Equal("func ltPtr2rt(src *lp.lt) rp.rt {\n"))
+			})
+		})
+
+		Context("swapped = true", func() {
+			It("writes filled function header into output for left pointers", func() {
+				data.header(true, true, false)
+				Expect(data.String()).To(Equal("func rt2ltPtr(src rp.rt) *lp.lt {\n"))
+			})
+		})
+
+		Context("swapped = false", func() {
+			It("writes filled function header into output for right pointers", func() {
+				data.header(false, false, true)
+				Expect(data.String()).To(Equal("func lt2rtPtr(src lp.lt) *rp.rt {\n"))
+			})
+		})
+
+		Context("swapped = true", func() {
+			It("writes filled function header into output for right pointers", func() {
+				data.header(true, false, true)
+				Expect(data.String()).To(Equal("func rtPtr2lt(src *rp.rt) lp.lt {\n"))
+			})
+		})
+
+		Context("swapped = false", func() {
+			It("writes filled function header into output for both pointers", func() {
+				data.header(false, true, true)
+				Expect(data.String()).To(Equal("func ltPtr2rtPtr(src *lp.lt) *rp.rt {\n"))
+			})
+		})
+
+		Context("swapped = true", func() {
+			It("writes filled function header into output for both pointers", func() {
+				data.header(true, true, true)
+				Expect(data.String()).To(Equal("func rtPtr2ltPtr(src *rp.rt) *lp.lt {\n"))
 			})
 		})
 	})
@@ -76,7 +118,7 @@ var _ = Describe("Template", func() {
 		})
 
 		Context("swapped = true", func() {
-			It("writes filled function header into output", func() {
+			It("writes filled function retstnt into output", func() {
 				data.retstmt(true)
 				Expect(data.String()).To(Equal("return lp.lt {\n"))
 			})
@@ -96,7 +138,7 @@ var _ = Describe("Template", func() {
 		})
 
 		Context("swapped = true", func() {
-			It("writes filled function header into output", func() {
+			It("writes filled function fieldmap into output", func() {
 				err := data.fieldmap(true, false, "")
 				Expect(err).NotTo(HaveOccurred())
 
@@ -110,7 +152,6 @@ var _ = Describe("Template", func() {
 			data.footer()
 			Expect(data.String()).To(Equal("}\n"))
 		})
-
 	})
 
 })

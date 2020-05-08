@@ -290,6 +290,30 @@ var _ = Describe("Field", func() {
 					vtags: []string{"json"},
 				}),
 
+			Entry("sts tag with omitempty == json tag on the right and json is valid tag",
+				input{
+					tag:     "field_2,omitempty",
+					expName: "Field2",
+					expType: "int",
+					right: Fields{
+						"Field1": Field{Type: bt("string")},
+						"Field2": Field{Type: bt("int"), Tags: Tags{"json": "field_2"}},
+					},
+					vtags: []string{"json"},
+				}),
+
+			Entry("sts tag == json tag on the right and json is valid tag with omitempty",
+				input{
+					tag:     "field_2",
+					expName: "Field2",
+					expType: "int",
+					right: Fields{
+						"Field1": Field{Type: bt("string")},
+						"Field2": Field{Type: bt("int"), Tags: Tags{"json": "field_2,omitempty"}},
+					},
+					vtags: []string{"json"},
+				}),
+
 			Entry("bar tag == db tag on the right and db is valid tag", input{
 				tag:     "field_3",
 				expName: "Field3",
@@ -309,7 +333,7 @@ var _ = Describe("Field", func() {
 		var (
 			readStruct = func(fname, sname string) Fields {
 				data, err := Parse("./testdata/field/"+fname, []string{
-					"sts", "json", "bar", "db",
+					"sts", "json", "bar", "db", "foo",
 				})
 				Expect(err).NotTo(HaveOccurred())
 
@@ -325,8 +349,8 @@ var _ = Describe("Field", func() {
 		BeforeEach(func() {
 			lf = readStruct("left.go", "Left")
 			rf = readStruct("right.go", "Right")
-			Expect(lf).To(HaveLen(4))
-			Expect(rf).To(HaveLen(4))
+			Expect(lf).To(HaveLen(6))
+			Expect(rf).To(HaveLen(6))
 		})
 
 		Context("when have two structures with tags", func() {
@@ -382,6 +406,32 @@ var _ = Describe("Field", func() {
 				}))
 
 			})
+
+			It("fills field with source tag 'foo'/omitemty and dest tag 'bar'", func() {
+				pairs, err := link(lf, rf, "foo", []string{"bar"})
+				Expect(err).NotTo(HaveOccurred())
+
+				sort.Sort(pairs)
+
+				Expect(pairs).To(HaveLen(2))
+
+				Expect(pairs[0]).To(Equal(fpair{
+					lf: "O", rf: "WOO",
+					lt: "int", rt: "int",
+					lp: false, rp: false,
+					convertable: true, assignable: true,
+					ord: 4,
+				}))
+
+				Expect(pairs[1]).To(Equal(fpair{
+					lf: "OM", rf: "WOM",
+					lt: "int", rt: "int",
+					lp: false, rp: false,
+					convertable: true, assignable: true,
+					ord: 5,
+				}))
+			})
+
 		})
 
 	})

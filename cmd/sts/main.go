@@ -22,7 +22,7 @@ Last part of this path will be used as output package name.
 	debug     = flag.Bool("debug", false, "Debug")
 	ver       = flag.Bool("version", false, "Print current version")
 
-	version = "0.0.2-alpha-dev"
+	version = "0.0.3-alpha-dev"
 )
 
 func main() {

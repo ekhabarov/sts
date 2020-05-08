@@ -110,7 +110,7 @@ var _ = Describe("Run", func() {
 					outputDir:    ".",
 					helperPkg:    "helpers",
 					version:      "0.0.1",
-					expectedName: "a001_to_b001.go",
+					expectedName: "a001_to_b001.sts.go",
 				},
 			),
 
@@ -122,7 +122,7 @@ var _ = Describe("Run", func() {
 					outputDir:    ".",
 					helperPkg:    "helpers",
 					version:      "0.0.2",
-					expectedName: "a002_to_b002.go",
+					expectedName: "a002_to_b002.sts.go",
 				},
 			),
 
@@ -152,7 +152,7 @@ var _ = Describe("Run", func() {
 				sourceTag:    "foo",
 				outputDir:    ".",
 				version:      "0.0.5",
-				expectedName: "a002_to_foo.go",
+				expectedName: "a002_to_foo.sts.go",
 			}),
 
 			Entry("006: Source 'foo' tag is mapped to 'bar' on destination", input{
@@ -162,7 +162,7 @@ var _ = Describe("Run", func() {
 				destTags:     "bar",
 				outputDir:    ".",
 				version:      "0.0.6",
-				expectedName: "a002_to_bar.go",
+				expectedName: "a002_to_bar.sts.go",
 			}),
 		)
 	})

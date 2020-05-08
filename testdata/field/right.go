@@ -5,4 +5,6 @@ type Right struct {
 	B      string
 	C      float32 `json:"crc"`
 	Double int     `db:"double"`
+	WOO    int     `bar:"wo"`
+	WOM    int     `bar:"wom,omitenmpty"`
 }
