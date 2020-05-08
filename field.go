@@ -121,6 +121,10 @@ func match(tag string, right Fields, vtags []string) (string, string, error) {
 		return "", "", ErrEmptyTag
 	}
 
+	if strings.Contains(tag, ",") {
+		tag = strings.Split(tag, ",")[0]
+	}
+
 	// search by field name
 	if f, ok := right[tag]; ok {
 		if f.Type == nil {
@@ -133,6 +137,10 @@ func match(tag string, right Fields, vtags []string) (string, string, error) {
 	for n, f := range right {
 		for t, v := range f.Tags {
 			for _, vt := range vtags {
+				if strings.Contains(v, ",") {
+					v = strings.Split(v, ",")[0]
+				}
+
 				if vt == t && tag == v {
 					return n, typName(f.Type.String()), nil
 				}

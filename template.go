@@ -18,8 +18,7 @@ func newTemplate(lt, rt, lp, rp string, ff []fpair) ftpldata {
 	}
 }
 
-// ftpldata is a data for filling template for basic
-// function.
+// ftpldata is a data for filling template for basic function.
 type ftpldata struct {
 	*bytes.Buffer
 	lp, rp string // package
@@ -27,8 +26,9 @@ type ftpldata struct {
 	fields fpairlist
 }
 
+// Print prints whole function into buffer.
 func (d *ftpldata) Print(swap, debug bool, helperpkg string) error {
-	d.header(swap)
+	d.header(swap, false, false)
 	d.retstmt(swap)
 	if err := d.fieldmap(swap, debug, helperpkg); err != nil {
 		return err
@@ -39,8 +39,32 @@ func (d *ftpldata) Print(swap, debug bool, helperpkg string) error {
 	return nil
 }
 
-func (d *ftpldata) header(swap bool) {
+// PrintWithPointer prints functions for pointer-to-pointer conversion.
+func (d *ftpldata) PrintWithPointer(swap bool) {
+	d.header(swap, true, true)
+
+	lt, rt := d.lt, d.rt
+
+	if swap {
+		lt, rt = rt, lt
+	}
+
+	fmt.Fprintf(d,
+		`if src == nil {
+    return nil
+}
+m := %s2%s(*src)
+return &m
+`, lt, rt,
+	)
+	d.footer()
+}
+
+func (d *ftpldata) header(swap, lpp, rpp bool) {
 	lp, rp, lt, rt := d.lp, d.rp, d.lt, d.rt
+
+	// function name
+	lf, rf := lt, rt
 
 	if rp != "" {
 		rp += "."
@@ -50,19 +74,30 @@ func (d *ftpldata) header(swap bool) {
 		lp += "."
 	}
 
+	if lpp {
+		lf += "Ptr"
+		lp = "*" + lp
+	}
+
+	if rpp {
+		rf += "Ptr"
+		rp = "*" + rp
+	}
+
 	if swap {
 		lp, rp = rp, lp
 		lt, rt = rt, lt
+		lf, rf = rf, lf
 	}
 
 	fmt.Fprintf(d,
 		// TODO(ekhabarov): Customizable 2 or To or whatever
-		"func %[1]s2%[2]s(src %[3]s%[1]s) %[4]s%[2]s {\n",
-		lt, rt, lp, rp,
+		"func %[1]s2%[2]s(src %[5]s%[3]s) %[6]s%[4]s {\n",
+		lf, rf, lt, rt, lp, rp,
 	)
 }
 
-// reutrn
+// retstmt prints return statement into buffer.
 func (d *ftpldata) retstmt(swap bool) {
 	rt, rp := d.rt, d.rp
 
