@@ -30,3 +30,91 @@ func FooPtr2A002Ptr(src *input.Foo) *input.A002 {
 	m := Foo2A002(*src)
 	return &m
 }
+func A002List2FooList(src []input.A002) []input.Foo {
+	if src == nil {
+		return nil
+	}
+	res := make([]input.Foo, len(src))
+	for k, s := range src {
+		p := A0022Foo(s)
+		res[k] = p
+	}
+	return res
+}
+func FooList2A002List(src []input.Foo) []input.A002 {
+	if src == nil {
+		return nil
+	}
+	res := make([]input.A002, len(src))
+	for k, s := range src {
+		p := Foo2A002(s)
+		res[k] = p
+	}
+	return res
+}
+func A002List2FooPtrList(src []input.A002) []*input.Foo {
+	if src == nil {
+		return nil
+	}
+	res := make([]*input.Foo, len(src))
+	for k, s := range src {
+		p := A0022Foo(s)
+		res[k] = &p
+	}
+	return res
+}
+func FooPtrList2A002List(src []*input.Foo) []input.A002 {
+	if src == nil {
+		return nil
+	}
+	res := make([]input.A002, len(src))
+	for k, s := range src {
+		p := Foo2A002(*s)
+		res[k] = p
+	}
+	return res
+}
+func A002PtrList2FooList(src []*input.A002) []input.Foo {
+	if src == nil {
+		return nil
+	}
+	res := make([]input.Foo, len(src))
+	for k, s := range src {
+		p := A0022Foo(*s)
+		res[k] = p
+	}
+	return res
+}
+func FooList2A002PtrList(src []input.Foo) []*input.A002 {
+	if src == nil {
+		return nil
+	}
+	res := make([]*input.A002, len(src))
+	for k, s := range src {
+		p := Foo2A002(s)
+		res[k] = &p
+	}
+	return res
+}
+func A002PtrList2FooPtrList(src []*input.A002) []*input.Foo {
+	if src == nil {
+		return nil
+	}
+	res := make([]*input.Foo, len(src))
+	for k, s := range src {
+		p := A0022Foo(*s)
+		res[k] = &p
+	}
+	return res
+}
+func FooPtrList2A002PtrList(src []*input.Foo) []*input.A002 {
+	if src == nil {
+		return nil
+	}
+	res := make([]*input.A002, len(src))
+	for k, s := range src {
+		p := Foo2A002(*s)
+		res[k] = &p
+	}
+	return res
+}

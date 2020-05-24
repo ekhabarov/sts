@@ -30,3 +30,91 @@ func BarPtr2A002Ptr(src *input.Bar) *input.A002 {
 	m := Bar2A002(*src)
 	return &m
 }
+func A002List2BarList(src []input.A002) []input.Bar {
+	if src == nil {
+		return nil
+	}
+	res := make([]input.Bar, len(src))
+	for k, s := range src {
+		p := A0022Bar(s)
+		res[k] = p
+	}
+	return res
+}
+func BarList2A002List(src []input.Bar) []input.A002 {
+	if src == nil {
+		return nil
+	}
+	res := make([]input.A002, len(src))
+	for k, s := range src {
+		p := Bar2A002(s)
+		res[k] = p
+	}
+	return res
+}
+func A002List2BarPtrList(src []input.A002) []*input.Bar {
+	if src == nil {
+		return nil
+	}
+	res := make([]*input.Bar, len(src))
+	for k, s := range src {
+		p := A0022Bar(s)
+		res[k] = &p
+	}
+	return res
+}
+func BarPtrList2A002List(src []*input.Bar) []input.A002 {
+	if src == nil {
+		return nil
+	}
+	res := make([]input.A002, len(src))
+	for k, s := range src {
+		p := Bar2A002(*s)
+		res[k] = p
+	}
+	return res
+}
+func A002PtrList2BarList(src []*input.A002) []input.Bar {
+	if src == nil {
+		return nil
+	}
+	res := make([]input.Bar, len(src))
+	for k, s := range src {
+		p := A0022Bar(*s)
+		res[k] = p
+	}
+	return res
+}
+func BarList2A002PtrList(src []input.Bar) []*input.A002 {
+	if src == nil {
+		return nil
+	}
+	res := make([]*input.A002, len(src))
+	for k, s := range src {
+		p := Bar2A002(s)
+		res[k] = &p
+	}
+	return res
+}
+func A002PtrList2BarPtrList(src []*input.A002) []*input.Bar {
+	if src == nil {
+		return nil
+	}
+	res := make([]*input.Bar, len(src))
+	for k, s := range src {
+		p := A0022Bar(*s)
+		res[k] = &p
+	}
+	return res
+}
+func BarPtrList2A002PtrList(src []*input.Bar) []*input.A002 {
+	if src == nil {
+		return nil
+	}
+	res := make([]*input.A002, len(src))
+	for k, s := range src {
+		p := Bar2A002(*s)
+		res[k] = &p
+	}
+	return res
+}

@@ -30,3 +30,23 @@ func B002Ptr2A002Ptr(src *input.B002) *input.A002 {
 	m := B0022A002(*src)
 	return &m
 }
+func A002List2B002List(src []input.A002) []input.B002 {
+	if src == nil {
+		return nil
+	}
+	res := make([]input.B002, len(src))
+	for k, s := range src {
+		res[k] = A0022B002(s)
+	}
+	return res
+}
+func B002List2A002List(src []input.B002) []input.A002 {
+	if src == nil {
+		return nil
+	}
+	res := make([]input.A002, len(src))
+	for k, s := range src {
+		res[k] = B0022A002(s)
+	}
+	return res
+}

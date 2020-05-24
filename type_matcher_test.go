@@ -26,7 +26,7 @@ func (t *typMatcher) Match(actual interface{}) (bool, error) {
 		)
 	}
 
-	return typName(s.String()) == t.expected.(string), nil
+	return baseType(s.String()) == t.expected.(string), nil
 }
 
 func (t *typMatcher) FailureMessage(actual interface{}) string {

@@ -18,11 +18,12 @@ Last part of this path will be used as output package name.
 	dt = flag.String("dt", "",
 		"List of comma-separated tag on destination structure.",
 	)
-	helperpkg = flag.String("hp", "", "Package with helper functions")
-	debug     = flag.Bool("debug", false, "Debug")
-	ver       = flag.Bool("version", false, "Print current version")
+	helperpkg = flag.String("hp", "", "Package with helper functions.")
+	debug     = flag.Bool("debug", false, "Add debug info into output file.")
+	ver       = flag.Bool("version", false, "Print current version.")
+	cfgmap    = flag.String("map", "", "Path to YAML file with field map config.")
 
-	version = "0.0.3-alpha-dev"
+	version = "0.0.4-alpha-dev"
 )
 
 func main() {
@@ -33,10 +34,20 @@ func main() {
 		os.Exit(0)
 	}
 
+	var m *sts.FieldConfig
+
+	if cfgmap != nil && *cfgmap != "" {
+		var err error
+		m, err = sts.LoadFieldConfigMap(*cfgmap)
+		must(err)
+	}
+
 	name, content, err := sts.Run(
 		*src, *dst,
 		*st, *dt,
-		*out, *helperpkg, version, *debug)
+		*out, *helperpkg, version, *debug,
+		m,
+	)
 	must(err)
 
 	file, err := os.Create(name)
