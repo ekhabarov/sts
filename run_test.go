@@ -67,7 +67,7 @@ var _ = Describe("Run", func() {
 
 			func(in input) {
 				fname, content, err := Run(in.left, in.right, in.sourceTag, in.destTags,
-					in.outputDir, in.helperPkg, in.version, false)
+					in.outputDir, in.helperPkg, in.version, false, nil)
 				if in.expectedErr == "" {
 					Expect(err).NotTo(HaveOccurred())
 				} else {

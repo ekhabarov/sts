@@ -246,9 +246,9 @@ var _ = Describe("Field", func() {
 					Expect(err).To(MatchError(i.expErr))
 				} else {
 					Expect(err).NotTo(HaveOccurred())
+					Expect(name).To(Equal(i.expName))
+					Expect(typ).To(Equal(i.expType))
 				}
-				Expect(name).To(Equal(i.expName))
-				Expect(typ).To(Equal(i.expType))
 			},
 
 			Entry("Empty tag", input{
@@ -267,6 +267,16 @@ var _ = Describe("Field", func() {
 					"Field1": Field{Type: bt("string")},
 					"Field2": Field{Type: bt("int")},
 				},
+			}),
+
+			Entry("Field.Type on right is nil", input{
+				tag:     "Field1",
+				expName: "Field1",
+				expType: "string",
+				right: Fields{
+					"Field1": Field{},
+				},
+				expErr: `type for field "Field1" is not found`,
 			}),
 
 			Entry("sts tag == json tag on the right and json is not valid tag",
@@ -356,7 +366,7 @@ var _ = Describe("Field", func() {
 		Context("when have two structures with tags", func() {
 
 			It("returns filled pairs", func() {
-				pairs, err := link(lf, rf, "sts", []string{"json"})
+				pairs, err := link(lf, rf, "sts", []string{"json"}, nil)
 				Expect(err).NotTo(HaveOccurred())
 
 				sort.Sort(pairs)
@@ -390,7 +400,7 @@ var _ = Describe("Field", func() {
 			})
 
 			It("fills field with source tag 'bar' and dest tag 'db'", func() {
-				pairs, err := link(lf, rf, "bar", []string{"db"})
+				pairs, err := link(lf, rf, "bar", []string{"db"}, nil)
 				Expect(err).NotTo(HaveOccurred())
 
 				sort.Sort(pairs)
@@ -408,7 +418,7 @@ var _ = Describe("Field", func() {
 			})
 
 			It("fills field with source tag 'foo'/omitemty and dest tag 'bar'", func() {
-				pairs, err := link(lf, rf, "foo", []string{"bar"})
+				pairs, err := link(lf, rf, "foo", []string{"bar"}, nil)
 				Expect(err).NotTo(HaveOccurred())
 
 				sort.Sort(pairs)

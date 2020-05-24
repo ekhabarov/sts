@@ -54,9 +54,9 @@ func (s Fields) String() string {
 	return c
 }
 
-// typName return type name in format <package>.<type> for FQTN like
+// baseType returns type name in format <package>.<type> for FQTN like
 // github.com/ekhabarov/sts/examples/nulls.Time.
-func typName(t string) string {
+func baseType(t string) string {
 	s := strings.Split(t, "/")
 	return s[len(s)-1]
 }

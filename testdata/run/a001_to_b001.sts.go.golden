@@ -22,3 +22,91 @@ func B001Ptr2A001Ptr(src *dest.B001) *source.A001 {
 	m := B0012A001(*src)
 	return &m
 }
+func A001List2B001List(src []source.A001) []dest.B001 {
+	if src == nil {
+		return nil
+	}
+	res := make([]dest.B001, len(src))
+	for k, s := range src {
+		p := A0012B001(s)
+		res[k] = p
+	}
+	return res
+}
+func B001List2A001List(src []dest.B001) []source.A001 {
+	if src == nil {
+		return nil
+	}
+	res := make([]source.A001, len(src))
+	for k, s := range src {
+		p := B0012A001(s)
+		res[k] = p
+	}
+	return res
+}
+func A001List2B001PtrList(src []source.A001) []*dest.B001 {
+	if src == nil {
+		return nil
+	}
+	res := make([]*dest.B001, len(src))
+	for k, s := range src {
+		p := A0012B001(s)
+		res[k] = &p
+	}
+	return res
+}
+func B001PtrList2A001List(src []*dest.B001) []source.A001 {
+	if src == nil {
+		return nil
+	}
+	res := make([]source.A001, len(src))
+	for k, s := range src {
+		p := B0012A001(*s)
+		res[k] = p
+	}
+	return res
+}
+func A001PtrList2B001List(src []*source.A001) []dest.B001 {
+	if src == nil {
+		return nil
+	}
+	res := make([]dest.B001, len(src))
+	for k, s := range src {
+		p := A0012B001(*s)
+		res[k] = p
+	}
+	return res
+}
+func B001List2A001PtrList(src []dest.B001) []*source.A001 {
+	if src == nil {
+		return nil
+	}
+	res := make([]*source.A001, len(src))
+	for k, s := range src {
+		p := B0012A001(s)
+		res[k] = &p
+	}
+	return res
+}
+func A001PtrList2B001PtrList(src []*source.A001) []*dest.B001 {
+	if src == nil {
+		return nil
+	}
+	res := make([]*dest.B001, len(src))
+	for k, s := range src {
+		p := A0012B001(*s)
+		res[k] = &p
+	}
+	return res
+}
+func B001PtrList2A001PtrList(src []*dest.B001) []*source.A001 {
+	if src == nil {
+		return nil
+	}
+	res := make([]*source.A001, len(src))
+	for k, s := range src {
+		p := B0012A001(*s)
+		res[k] = &p
+	}
+	return res
+}
