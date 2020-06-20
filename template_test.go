@@ -12,7 +12,7 @@ var _ = Describe("Template", func() {
 	)
 
 	BeforeEach(func() {
-		data = newTemplate("lt", "rt", "lp", "rp", []fpair{
+		data = newTemplate("lt", "rt", "lpkg", "rpkg", []fpair{
 			{
 				lt:          "flt",
 				rt:          "frt",
@@ -35,8 +35,8 @@ var _ = Describe("Template", func() {
 
 			Expect(data.lt).To(Equal("lt"))
 			Expect(data.rt).To(Equal("rt"))
-			Expect(data.lp).To(Equal("lp"))
-			Expect(data.rp).To(Equal("rp"))
+			Expect(data.lpkg).To(Equal("lpkg"))
+			Expect(data.rpkg).To(Equal("rpkg"))
 
 			f := data.fields[0]
 
@@ -58,26 +58,26 @@ var _ = Describe("Template", func() {
 			Expect(data.String()).To(Equal(expected))
 		},
 
-		Entry("", false, false, false, false, "func lt2rt(src lp.lt) rp.rt {\n"),
-		Entry("", true, false, false, false, "func rt2lt(src rp.rt) lp.lt {\n"),
+		Entry("", false, false, false, false, "func lt2rt(src lpkg.lt) rpkg.rt {\n"),
+		Entry("", true, false, false, false, "func rt2lt(src rpkg.rt) lpkg.lt {\n"),
 
-		Entry("", false, true, false, false, "func ltPtr2rt(src *lp.lt) rp.rt {\n"),
-		Entry("AA", true, true, false, false, "func rt2ltPtr(src rp.rt) *lp.lt {\n"),
+		Entry("", false, true, false, false, "func ltPtr2rt(src *lpkg.lt) rpkg.rt {\n"),
+		Entry("AA", true, true, false, false, "func rt2ltPtr(src rpkg.rt) *lpkg.lt {\n"),
 
-		Entry("", false, false, true, false, "func lt2rtPtr(src lp.lt) *rp.rt {\n"),
-		Entry("", true, false, true, false, "func rtPtr2lt(src *rp.rt) lp.lt {\n"),
+		Entry("", false, false, true, false, "func lt2rtPtr(src lpkg.lt) *rpkg.rt {\n"),
+		Entry("", true, false, true, false, "func rtPtr2lt(src *rpkg.rt) lpkg.lt {\n"),
 
-		Entry("", false, true, true, false, "func ltPtr2rtPtr(src *lp.lt) *rp.rt {\n"),
-		Entry("", true, true, true, false, "func rtPtr2ltPtr(src *rp.rt) *lp.lt {\n"),
+		Entry("", false, true, true, false, "func ltPtr2rtPtr(src *lpkg.lt) *rpkg.rt {\n"),
+		Entry("", true, true, true, false, "func rtPtr2ltPtr(src *rpkg.rt) *lpkg.lt {\n"),
 
-		Entry("", false, false, false, true, "func ltList2rtList(src []lp.lt) []rp.rt {\n"),
-		Entry("", true, false, false, true, "func rtList2ltList(src []rp.rt) []lp.lt {\n"),
+		Entry("", false, false, false, true, "func ltList2rtList(src []lpkg.lt) []rpkg.rt {\n"),
+		Entry("", true, false, false, true, "func rtList2ltList(src []rpkg.rt) []lpkg.lt {\n"),
 
-		Entry("", false, false, true, true, "func ltList2rtPtrList(src []lp.lt) []*rp.rt {\n"),
-		Entry("", true, false, true, true, "func rtPtrList2ltList(src []*rp.rt) []lp.lt {\n"),
+		Entry("", false, false, true, true, "func ltList2rtPtrList(src []lpkg.lt) []*rpkg.rt {\n"),
+		Entry("", true, false, true, true, "func rtPtrList2ltList(src []*rpkg.rt) []lpkg.lt {\n"),
 
-		Entry("", false, true, true, true, "func ltPtrList2rtPtrList(src []*lp.lt) []*rp.rt {\n"),
-		Entry("", true, true, true, true, "func rtPtrList2ltPtrList(src []*rp.rt) []*lp.lt {\n"),
+		Entry("", false, true, true, true, "func ltPtrList2rtPtrList(src []*lpkg.lt) []*rpkg.rt {\n"),
+		Entry("", true, true, true, true, "func rtPtrList2ltPtrList(src []*rpkg.rt) []*lpkg.lt {\n"),
 	)
 
 	DescribeTable("retstmt func",
@@ -86,8 +86,8 @@ var _ = Describe("Template", func() {
 			Expect(data.String()).To(Equal(expected))
 		},
 
-		Entry("swapped == false", false, "return rp.rt {\n"),
-		Entry("swapped == true", true, "return lp.lt {\n"),
+		Entry("swapped == false", false, "return rpkg.rt {\n"),
+		Entry("swapped == true", true, "return lpkg.lt {\n"),
 	)
 
 	DescribeTable("Fieldmap func",
@@ -110,36 +110,54 @@ var _ = Describe("Template", func() {
 		})
 	})
 
-	DescribeTable("fn func",
-		func(lp, rp, list bool, expected string) {
-			n := fn("left", "right", lp, rp, list)
-			Expect(n).To(Equal(expected))
-		},
+	Describe("fnHeader func", func() {
 
-		Entry("Non-pointers", false, false, false, "left2right"),
-		Entry("Left pointer", true, false, false, "leftPtr2right"),
-		Entry("Right pointer", false, true, false, "left2rightPtr"),
-		Entry("Both pointers", true, true, false, "leftPtr2rightPtr"),
+		DescribeTable("cases",
+			func(lp, rp, list bool, expected string) {
+				n := fnHeader("left", "right", "lpkg", "rpkg", lp, rp, list)
+				Expect(n).To(Equal(expected))
+			},
 
-		Entry("Non-pointers: list", false, false, true, "leftList2rightList"),
-		Entry("Left pointer: list", true, false, true, "leftPtrList2rightList"),
-		Entry("Right pointer: list", false, true, true, "leftList2rightPtrList"),
-		Entry("Both pointers: list", true, true, true, "leftPtrList2rightPtrList"),
-	)
+			Entry("Non-pointers", false, false, false, "left2right"),
+			Entry("Left pointer", true, false, false, "leftPtr2right"),
+			Entry("Right pointer", false, true, false, "left2rightPtr"),
+			Entry("Both pointers", true, true, false, "leftPtr2rightPtr"),
+
+			Entry("Non-pointers: list", false, false, true, "leftList2rightList"),
+			Entry("Left pointer: list", true, false, true, "leftPtrList2rightList"),
+			Entry("Right pointer: list", false, true, true, "leftList2rightPtrList"),
+			Entry("Both pointers: list", true, true, true, "leftPtrList2rightPtrList"),
+		)
+
+		Context("when structs have identical names", func() {
+
+			It("prepend struct names with capitalized package name", func() {
+				n := fnHeader("foo", "foo", "lpkg", "rpkg", false, false, false)
+				Expect(n).To(Equal("Lpkgfoo2Rpkgfoo"))
+			})
+		})
+	})
 
 	Describe("funcName", func() {
 
 		Context("when two args passed", func() {
 			It("return name with default divider", func() {
-				name := funcName("left", "right")
+				name := funcName("left", "right", "lpkg", "rpkg")
 				Expect(name).To(Equal("left2right"))
 			})
 		})
 
 		Context("when three args passed", func() {
 			It("return name with divider equals to third arg", func() {
-				name := funcName("left", "right", "To")
+				name := funcName("left", "right", "lpkg", "rpkg", "To")
 				Expect(name).To(Equal("leftToright"))
+			})
+		})
+
+		Context("when stucts have identical names", func() {
+			It("prepend struct names with capitalized package name", func() {
+				name := funcName("foo", "foo", "lpkg", "rpkg", "To")
+				Expect(name).To(Equal("LpkgfooToRpkgfoo"))
 			})
 		})
 	})
@@ -189,10 +207,10 @@ var _ = Describe("Template", func() {
 			Expect(data.String()).To(Equal(expected))
 		},
 
-		Entry("swapped == false", false, `func ltPtr2rtPtr(src *lp.lt) *rp.rt {
+		Entry("swapped == false", false, `func ltPtr2rtPtr(src *lpkg.lt) *rpkg.rt {
 if src == nil { return nil }; m := lt2rt(*src); return &m}
 `),
-		Entry("swapped == true", true, `func rtPtr2ltPtr(src *rp.rt) *lp.lt {
+		Entry("swapped == true", true, `func rtPtr2ltPtr(src *rpkg.rt) *lpkg.lt {
 if src == nil { return nil }; m := rt2lt(*src); return &m}
 `),
 	)
@@ -203,20 +221,20 @@ if src == nil { return nil }; m := rt2lt(*src); return &m}
 			Expect(data.String()).To(Equal(expected))
 
 		},
-		Entry("src => dst", false, false, false, `func ltList2rtList(src []lp.lt) []rp.rt {
-if src == nil { return nil }; res := make([]rp.rt, len(src)); for k, s := range src { p := lt2rt(s); res[k] = p }; return res}
+		Entry("src => dst", false, false, false, `func ltList2rtList(src []lpkg.lt) []rpkg.rt {
+if src == nil { return nil }; res := make([]rpkg.rt, len(src)); for k, s := range src { p := lt2rt(s); res[k] = p }; return res}
 `),
 
-		Entry("src => *dst", false, false, true, `func ltList2rtPtrList(src []lp.lt) []*rp.rt {
-if src == nil { return nil }; res := make([]*rp.rt, len(src)); for k, s := range src { p := lt2rt(s); res[k] = &p }; return res}
+		Entry("src => *dst", false, false, true, `func ltList2rtPtrList(src []lpkg.lt) []*rpkg.rt {
+if src == nil { return nil }; res := make([]*rpkg.rt, len(src)); for k, s := range src { p := lt2rt(s); res[k] = &p }; return res}
 `),
 
-		Entry("*src => dst", false, true, false, `func ltPtrList2rtList(src []*lp.lt) []rp.rt {
-if src == nil { return nil }; res := make([]rp.rt, len(src)); for k, s := range src { p := lt2rt(*s); res[k] = p }; return res}
+		Entry("*src => dst", false, true, false, `func ltPtrList2rtList(src []*lpkg.lt) []rpkg.rt {
+if src == nil { return nil }; res := make([]rpkg.rt, len(src)); for k, s := range src { p := lt2rt(*s); res[k] = p }; return res}
 `),
 
-		Entry("*src => *dst", false, true, true, `func ltPtrList2rtPtrList(src []*lp.lt) []*rp.rt {
-if src == nil { return nil }; res := make([]*rp.rt, len(src)); for k, s := range src { p := lt2rt(*s); res[k] = &p }; return res}
+		Entry("*src => *dst", false, true, true, `func ltPtrList2rtPtrList(src []*lpkg.lt) []*rpkg.rt {
+if src == nil { return nil }; res := make([]*rpkg.rt, len(src)); for k, s := range src { p := lt2rt(*s); res[k] = &p }; return res}
 `),
 	)
 
