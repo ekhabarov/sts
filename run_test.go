@@ -164,6 +164,16 @@ var _ = Describe("Run", func() {
 				version:      "0.0.6",
 				expectedName: "a002_to_bar.sts.go",
 			}),
+
+			Entry("007: Same struct with identical names in diffrent packages", input{
+				left:         "./testdata/run/input/bar.go:Bar",
+				right:        "./testdata/run/input/dest/bar.go:Bar",
+				sourceTag:    "bar",
+				destTags:     "bar",
+				outputDir:    ".",
+				version:      "0.0.7",
+				expectedName: "input_bar_to_dest_bar.sts.go",
+			}),
 		)
 	})
 

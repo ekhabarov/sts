@@ -136,6 +136,11 @@ func Run(
 	ff.Reset()
 	ff.Write(ic)
 
+	if ssn == dsn {
+		ssn = srcp + "_" + ssn
+		dsn = dstp + "_" + dsn
+	}
+
 	ofile := filepath.Join(
 		outputDir, strings.ToLower(fmt.Sprintf("%s_to_%s.sts.go", ssn, dsn)),
 	)
