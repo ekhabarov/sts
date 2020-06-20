@@ -23,7 +23,7 @@ Last part of this path will be used as output package name.
 	ver       = flag.Bool("version", false, "Print current version.")
 	cfgmap    = flag.String("map", "", "Path to YAML file with field map config.")
 
-	version = "0.0.4-alpha-dev"
+	version = "0.0.5"
 )
 
 func main() {
