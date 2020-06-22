@@ -14,8 +14,7 @@ go:
   - tip
 
 before_install:
-  - GO111MODULE=off go get github.com/onsi/gomega
-  - GO111MODULE=off go get github.com/onsi/ginkgo/ginkgo
+  - go get github.com/onsi/gomega github.com/onsi/ginkgo/ginkgo
   - go mod download
   - go mod verify
 
