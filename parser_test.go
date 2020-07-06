@@ -129,7 +129,7 @@ var _ = Describe("Parser", func() {
 							}),
 
 							"embedded_0": gs.MatchAllFields(gs.Fields{
-								"Type":      TypeMatcher("Embedded"),
+								"Type":      TypeMatcher("whatever.Embedded"),
 								"IsPointer": BeFalse(),
 								"Tags":      BeZero(),
 								"Ord":       Equal(uint8(2)),
@@ -411,5 +411,4 @@ var _ = Describe("Parser", func() {
 			})
 		})
 	})
-
 })
