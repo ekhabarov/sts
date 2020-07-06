@@ -26,11 +26,11 @@ func (t *typMatcher) Match(actual interface{}) (bool, error) {
 		)
 	}
 
-	return baseType(s.String()) == t.expected.(string), nil
+	return baseType(s) == t.expected.(string), nil
 }
 
 func (t *typMatcher) FailureMessage(actual interface{}) string {
-	return fmt.Sprintf("Expected %q is equal to %q", actual, t.expected)
+	return fmt.Sprintf("Expected %q is equal to %q", baseType(actual.(types.Type)), t.expected)
 }
 
 func (t *typMatcher) NegatedFailureMessage(actual interface{}) string {

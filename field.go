@@ -66,7 +66,6 @@ func (p fpair) Print(swap, debug bool, helperpkg string) (string, error) {
 	case p.assignable:
 		lf = "src." + lf
 	case p.convertable:
-
 		lf = fmt.Sprintf("%s(src.%s)", rt, lf)
 	default:
 		lt = strings.Replace(strings.Title(lt), ".", "", -1)
@@ -132,7 +131,7 @@ func match(tag string, right Fields, vtags []string) (string, string, error) {
 		if f.Type == nil {
 			return "", "", fmt.Errorf("type for field %q is not found", tag)
 		}
-		return tag, baseType(f.Type.String()), nil
+		return tag, baseType(f.Type), nil
 	}
 
 	// search among valid tags on the right side.
@@ -173,11 +172,12 @@ func link(
 		fp := fpairlist{}
 
 		for f := range ffchan {
+
 			fp = append(fp, fpair{
 				lf: f.lname,
 				rf: f.rname,
-				lt: baseType(f.lf.Type.String()),
-				rt: baseType(f.rf.Type.String()),
+				lt: baseType(f.lf.Type),
+				rt: baseType(f.rf.Type),
 				lp: f.lf.IsPointer,
 				rp: f.rf.IsPointer,
 				// TODO(ekhabarov): Add test: int64 <> string

@@ -56,9 +56,26 @@ func (s Fields) String() string {
 
 // baseType returns type name in format <package>.<type> for FQTN like
 // github.com/ekhabarov/sts/examples/nulls.Time.
-func baseType(t string) string {
-	s := strings.Split(t, "/")
-	return s[len(s)-1]
+func baseType(t types.Type) string {
+	switch typ := t.(type) {
+	case *types.Named:
+		splt := strings.Split(typ.String(), "/")
+
+		switch true {
+		case len(splt) > 1: // it's a FQTN
+			return splt[len(splt)-1]
+		case strings.Contains(typ.String(), "."):
+			return fmt.Sprintf("%s.%s", typ.Obj().Pkg().Name(), strings.Split(typ.String(), ".")[1])
+		default:
+			return fmt.Sprintf("%s.%s", typ.Obj().Pkg().Name(), typ)
+		}
+
+	case *types.Basic:
+		return typ.String()
+
+	default:
+		return typ.String()
+	}
 }
 
 func (fi Field) String() string {

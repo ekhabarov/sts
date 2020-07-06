@@ -174,6 +174,16 @@ var _ = Describe("Run", func() {
 				version:      "0.0.7",
 				expectedName: "input_bar_to_dest_bar.sts.go",
 			}),
+
+			Entry("008: Custom types with convertable underlying types.", input{
+				left:         "./testdata/run/input/source/custom_type.go:AC",
+				right:        "./testdata/run/input/dest/custom_type.go:DC",
+				sourceTag:    "json",
+				destTags:     "json",
+				outputDir:    ".",
+				version:      "0.0.8",
+				expectedName: "ac_to_dc.sts.go",
+			}),
 		)
 	})
 
