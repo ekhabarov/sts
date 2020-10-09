@@ -2,7 +2,7 @@
 
 [![codecov](https://codecov.io/gh/powerflyco/sts/branch/master/graph/badge.svg)](https://codecov.io/gh/powerflyco/sts)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/powerflyco/sts)](https://github.com/powerflyco/sts/releases)
-[![Travis (.org)](https://img.shields.io/travis/ekhabarov/sts)](https://travis-ci.org/ekhabarov/sts)
+[![Travis (.org)](https://img.shields.io/travis/powerflyco/sts)](https://travis-ci.org/powerflyco/sts)
 [![GoDoc](https://godoc.org/https://godoc.org/github.com/powerflyco/sts?status.svg)](https://godoc.org/github.com/powerflyco/sts)
 [![Go Report Card](https://goreportcard.com/badge/github.com/powerflyco/sts)](https://goreportcard.com/report/github.com/powerflyco/sts)
 
