@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ekhabarov/sts"
+	"github.com/powerflyco/sts"
 )
 
 var (

@@ -55,7 +55,7 @@ func (s Fields) String() string {
 }
 
 // baseType returns type name in format <package>.<type> for FQTN like
-// github.com/ekhabarov/sts/examples/nulls.Time.
+// github.com/powerflyco/sts/examples/nulls.Time.
 func baseType(t types.Type) string {
 	switch typ := t.(type) {
 	case *types.Named:
@@ -262,7 +262,7 @@ func Parse(path string, tags []string) (*File, error) {
 	// https://github.com/golang/go/issues/11415#issuecomment-283445198
 	//
 	// Basically, importer.Default() doesn't work when package like
-	// "github.com/ekhabarov/sts/example/nulls" is imported.
+	// "github.com/powerflyco/sts/example/nulls" is imported.
 	//
 	// TODO(ekhabarov): import structs from vendor.
 	conf := types.Config{Importer: importer.ForCompiler(fset, "source", nil)}

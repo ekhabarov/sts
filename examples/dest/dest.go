@@ -1,6 +1,6 @@
 package dest
 
-import "github.com/ekhabarov/sts/examples/nulls"
+import "github.com/powerflyco/sts/examples/nulls"
 
 // Dest, techincally it's some isolated structure we cannot change.
 type Dest struct {

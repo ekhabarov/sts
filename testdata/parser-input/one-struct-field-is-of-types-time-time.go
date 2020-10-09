@@ -3,7 +3,7 @@ package whatever
 import (
 	"time"
 
-	"github.com/ekhabarov/sts/examples/nulls"
+	"github.com/powerflyco/sts/examples/nulls"
 )
 
 type (

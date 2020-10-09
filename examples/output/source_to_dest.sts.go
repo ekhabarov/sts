@@ -3,8 +3,8 @@
 package output
 
 import (
-	"github.com/ekhabarov/sts/examples"
-	"github.com/ekhabarov/sts/examples/dest"
+	"github.com/powerflyco/sts/examples"
+	"github.com/powerflyco/sts/examples/dest"
 )
 
 func Source2Dest(src examples.Source) dest.Dest {

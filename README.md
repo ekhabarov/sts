@@ -1,10 +1,10 @@
 # sts: struct to struct: generator of transformation functions
 
-[![codecov](https://codecov.io/gh/ekhabarov/sts/branch/master/graph/badge.svg)](https://codecov.io/gh/ekhabarov/sts)
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ekhabarov/sts)](https://github.com/ekhabarov/sts/releases)
+[![codecov](https://codecov.io/gh/powerflyco/sts/branch/master/graph/badge.svg)](https://codecov.io/gh/powerflyco/sts)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/powerflyco/sts)](https://github.com/powerflyco/sts/releases)
 [![Travis (.org)](https://img.shields.io/travis/ekhabarov/sts)](https://travis-ci.org/ekhabarov/sts)
-[![GoDoc](https://godoc.org/https://godoc.org/github.com/ekhabarov/sts?status.svg)](https://godoc.org/github.com/ekhabarov/sts)
-[![Go Report Card](https://goreportcard.com/badge/github.com/ekhabarov/sts)](https://goreportcard.com/report/github.com/ekhabarov/sts)
+[![GoDoc](https://godoc.org/https://godoc.org/github.com/powerflyco/sts?status.svg)](https://godoc.org/github.com/powerflyco/sts)
+[![Go Report Card](https://goreportcard.com/badge/github.com/powerflyco/sts)](https://goreportcard.com/report/github.com/powerflyco/sts)
 
 <!-- vim-markdown-toc GFM -->
 
@@ -26,7 +26,7 @@
 ## Install
 
 ```shell
-go get -u github.com/ekhabarov/sts/cmd/sts
+go get -u github.com/powerflyco/sts/cmd/sts
 ```
 
 ## Motivation
@@ -155,8 +155,8 @@ parameters to `sts`.
 package output
 
 import (
-	"github.com/ekhabarov/sts/examples"
-	"github.com/ekhabarov/sts/examples/dest"
+	"github.com/powerflyco/sts/examples"
+	"github.com/powerflyco/sts/examples/dest"
 )
 
 func Source2Dest(src examples.Source) dest.Dest {

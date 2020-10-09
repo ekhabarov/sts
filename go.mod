@@ -1,4 +1,4 @@
-module github.com/ekhabarov/sts
+module github.com/powerflyco/sts
 
 go 1.13
 

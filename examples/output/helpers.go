@@ -3,7 +3,7 @@ package output
 import (
 	"time"
 
-	"github.com/ekhabarov/sts/examples/nulls"
+	"github.com/powerflyco/sts/examples/nulls"
 )
 
 func Bool2Int(b bool) int {
